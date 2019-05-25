@@ -11,4 +11,6 @@ public interface RecipeService {
     Recipe findById(Long id);
 
     List<Ingredient> getListOfMissingIngredients(long recipeId, List<Ingredient> ownedIngredients);
+
+    List<Recipe> getListOfAvailableRecipes(List<Ingredient> ingredientsOwned);
 }

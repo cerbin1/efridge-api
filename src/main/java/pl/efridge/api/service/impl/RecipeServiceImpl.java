@@ -79,4 +79,33 @@ public class RecipeServiceImpl implements RecipeService {
         }
         return missingIngredients;
     }
+
+    @Override
+    public List<Recipe> getListOfAvailableRecipes(List<Ingredient> ingredientsOwned) {
+        List<Recipe> availableRecipes = new ArrayList<>();
+        recipes.forEach(recipe -> {
+            if (isEnoughIngredientsForRecipe(recipe, ingredientsOwned)) {
+                availableRecipes.add(recipe);
+            }
+        });
+        return availableRecipes;
+    }
+
+    private boolean isEnoughIngredientsForRecipe(Recipe recipe, List<Ingredient> ingredientsOwned) {
+        List<Ingredient> recipeIngredients = recipe.getIngredients();
+        for (Ingredient recipeIngredient : recipeIngredients) {
+            Ingredient nextIngredientOwned = ingredientsOwned
+                    .stream()
+                    .filter(tmpIngredient -> tmpIngredient.getId() == recipeIngredient.getId())
+                    .findFirst()
+                    .orElse(null);
+            if (nextIngredientOwned == null) {
+                return false;
+            }
+            if (recipeIngredient.getQuantity() > nextIngredientOwned.getQuantity()) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
