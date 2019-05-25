@@ -11,5 +11,5 @@ public class Recipe {
     private long id;
     private String name;
     private String description;
-    private List<Ingredient> ingredient;
+    private List<Ingredient> ingredients;
 }

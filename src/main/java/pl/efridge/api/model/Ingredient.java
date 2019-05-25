@@ -8,6 +8,6 @@ import lombok.Data;
 public class Ingredient {
     private long id;
     private String name;
-    private double quantity;
+    private int quantity;
     private String type;
 }
