@@ -23,8 +23,8 @@ public class ApiRestController {
 
     @GetMapping("recipes/all")
     @ResponseBody
-    public List<Recipe> getAllRecipes() {
-        return recipeService.getAllRecipes();
+    public ResponseEntity<List<Recipe>> getAllRecipes() {
+        return new ResponseEntity<>(recipeService.getAllRecipes(), OK);
     }
 
     @GetMapping("recipes/{recipeId}/missingIngredients")
