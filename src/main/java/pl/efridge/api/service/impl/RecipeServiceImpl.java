@@ -5,6 +5,7 @@ import pl.efridge.api.model.Ingredient;
 import pl.efridge.api.model.Recipe;
 import pl.efridge.api.service.RecipeService;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,5 +50,33 @@ public class RecipeServiceImpl implements RecipeService {
                 .stream()
                 .filter(recipe -> recipe.getId() == id)
                 .findFirst().orElse(null);
+    }
+
+    @Override
+    public List<Ingredient> getListOfMissingIngredients(long recipeId, List<Ingredient> ownedIngredients) {
+        Recipe recipe = this.findById(recipeId);
+        if (recipe == null) {
+            return null;
+        }
+
+        List<Ingredient> missingIngredients = new ArrayList<>();
+        for (Ingredient recipeIngredient : recipe.getIngredients()) {
+            long ingredientId = recipeIngredient.getId();
+            Ingredient ingredientOwned = ownedIngredients
+                    .stream()
+                    .filter(tmpIngredient -> tmpIngredient.getId() == ingredientId)
+                    .findFirst()
+                    .orElse(null);
+            if (ingredientOwned == null) {
+                missingIngredients.add(recipeIngredient);
+            } else {
+                int ingredientQuantityNeeded = recipeIngredient.getQuantity() - ingredientOwned.getQuantity();
+                if (ingredientQuantityNeeded > 0) {
+                    recipeIngredient.setQuantity(ingredientQuantityNeeded);
+                    missingIngredients.add(recipeIngredient);
+                }
+            }
+        }
+        return missingIngredients;
     }
 }
