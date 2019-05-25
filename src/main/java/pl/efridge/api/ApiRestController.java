@@ -38,4 +38,11 @@ public class ApiRestController {
         }
         return new ResponseEntity<>(listOfMissingIngredientsBasedOnRecipe, OK);
     }
+
+    @GetMapping("recipes/available")
+    public ResponseEntity<List<Recipe>> getListOfAvailableRecipesBasedOnOwnedIngredients(
+            @RequestBody List<Ingredient> ingredientsOwned) {
+        List<Recipe> availableRecipes = recipeService.getListOfAvailableRecipes(ingredientsOwned);
+        return new ResponseEntity<>(availableRecipes, OK);
+    }
 }
