@@ -34,7 +34,7 @@ public class RecipeServiceImpl implements RecipeService {
                     "Dodać ryż, wymieszać i doprawić do smaku.\n" +
                     "Posypać posiekaną natką pietruszki.", Arrays.asList(
                     new Ingredient(6, "Ryż", 2, "sztuka"),
-                    new Ingredient(1, "Parówka", 6, "gram"),
+                    new Ingredient(1, "Parówka", 6, "sztuka"),
                     new Ingredient(7, "Papryka", 2, "sztuka"),
                     new Ingredient(3, "Cebula", 2, "sztuka")
             )));
