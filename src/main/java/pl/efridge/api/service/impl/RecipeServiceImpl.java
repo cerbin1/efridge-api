@@ -61,16 +61,12 @@ public class RecipeServiceImpl implements RecipeService {
 
         List<Ingredient> missingIngredients = new ArrayList<>();
         for (Ingredient recipeIngredient : recipe.getIngredients()) {
-            long ingredientId = recipeIngredient.getId();
-            Ingredient ingredientOwned = ownedIngredients
-                    .stream()
-                    .filter(tmpIngredient -> tmpIngredient.getId() == ingredientId)
-                    .findFirst()
-                    .orElse(null);
-            if (ingredientOwned == null) {
+            long recipeIngredientId = recipeIngredient.getId();
+            Ingredient ownedIngredient = getSpecificIngredientFromOwnedIngredients(ownedIngredients, recipeIngredientId);
+            if (ownedIngredient == null) {
                 missingIngredients.add(recipeIngredient);
             } else {
-                int ingredientQuantityNeeded = recipeIngredient.getQuantity() - ingredientOwned.getQuantity();
+                int ingredientQuantityNeeded = recipeIngredient.getQuantity() - ownedIngredient.getQuantity();
                 if (ingredientQuantityNeeded > 0) {
                     recipeIngredient.setQuantity(ingredientQuantityNeeded);
                     missingIngredients.add(recipeIngredient);
@@ -91,14 +87,19 @@ public class RecipeServiceImpl implements RecipeService {
         return availableRecipes;
     }
 
+    private Ingredient getSpecificIngredientFromOwnedIngredients(List<Ingredient> ingredientsOwned, long id) {
+        return ingredientsOwned
+                .stream()
+                .filter(tmpIngredient -> tmpIngredient.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
     private boolean isEnoughIngredientsForRecipe(Recipe recipe, List<Ingredient> ingredientsOwned) {
         List<Ingredient> recipeIngredients = recipe.getIngredients();
         for (Ingredient recipeIngredient : recipeIngredients) {
-            Ingredient nextIngredientOwned = ingredientsOwned
-                    .stream()
-                    .filter(tmpIngredient -> tmpIngredient.getId() == recipeIngredient.getId())
-                    .findFirst()
-                    .orElse(null);
+            long recipeIngredientId = recipeIngredient.getId();
+            Ingredient nextIngredientOwned = getSpecificIngredientFromOwnedIngredients(ingredientsOwned, recipeIngredientId);
             if (nextIngredientOwned == null) {
                 return false;
             }
