@@ -12,6 +12,7 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
+@CrossOrigin
 @RestController
 public class ApiRestController {
     private final RecipeService recipeService;
