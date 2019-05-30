@@ -96,6 +96,15 @@ public class RecipeServiceImpl implements RecipeService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Recipe getRecipeById(long id) {
+        return recipes
+                .stream()
+                .filter(recipe -> recipe.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
     private Ingredient getSpecificIngredientFromOwnedIngredients(List<Ingredient> ingredientsOwned, long id) {
         return ingredientsOwned
                 .stream()

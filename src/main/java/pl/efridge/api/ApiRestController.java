@@ -28,6 +28,13 @@ public class ApiRestController {
         return new ResponseEntity<>(recipeService.getAllRecipes(), OK);
     }
 
+    @GetMapping("recipes/{id}")
+    @ResponseBody
+    public ResponseEntity<Recipe> getRecipeById(
+            @PathVariable long id) {
+        return new ResponseEntity<>(recipeService.getRecipeById(id), OK);
+    }
+
     @GetMapping("recipes/{recipeId}/missingIngredients")
     public ResponseEntity<List<Ingredient>> getListOfMissingIngredientsBasedOnOwned(
             @PathVariable Long recipeId,

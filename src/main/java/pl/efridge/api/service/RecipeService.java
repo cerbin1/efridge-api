@@ -15,4 +15,6 @@ public interface RecipeService {
     List<Recipe> getListOfAvailableRecipes(List<Ingredient> ingredientsOwned);
 
     List<Recipe> getListOfRecipesWithName(String name);
+
+    Recipe getRecipeById(long id);
 }
