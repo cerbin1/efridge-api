@@ -8,6 +8,7 @@ import pl.efridge.api.service.RecipeService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
@@ -85,6 +86,14 @@ public class RecipeServiceImpl implements RecipeService {
             }
         });
         return availableRecipes;
+    }
+
+    @Override
+    public List<Recipe> getListOfRecipesWithName(String name) {
+        return recipes
+                .stream()
+                .filter(recipe -> recipe.getName().toLowerCase().contains(name.toLowerCase()))
+                .collect(Collectors.toList());
     }
 
     private Ingredient getSpecificIngredientFromOwnedIngredients(List<Ingredient> ingredientsOwned, long id) {

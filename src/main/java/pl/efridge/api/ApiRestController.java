@@ -46,4 +46,11 @@ public class ApiRestController {
         List<Recipe> availableRecipes = recipeService.getListOfAvailableRecipes(ingredientsOwned);
         return new ResponseEntity<>(availableRecipes, OK);
     }
+
+    @GetMapping("recipes/findByName")
+    public ResponseEntity<List<Recipe>> getListOfRecipesWithName(
+            @RequestParam String name) {
+        List<Recipe> recipesWithName = recipeService.getListOfRecipesWithName(name);
+        return new ResponseEntity<>(recipesWithName, OK);
+    }
 }
