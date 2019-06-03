@@ -1,5 +1,7 @@
 package pl.efridge.api;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -7,6 +9,7 @@ import pl.efridge.api.model.Ingredient;
 import pl.efridge.api.model.Recipe;
 import pl.efridge.api.service.RecipeService;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -47,9 +50,14 @@ public class ApiRestController {
         return new ResponseEntity<>(listOfMissingIngredientsBasedOnRecipe, OK);
     }
 
-    @GetMapping("recipes/available")
+    @CrossOrigin
+    @PostMapping("recipes/available")
     public ResponseEntity<List<Recipe>> getListOfAvailableRecipesBasedOnOwnedIngredients(
-            @RequestBody List<Ingredient> ingredientsOwned) {
+            @RequestBody String jsonAsString) {
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<Ingredient>>() {
+        }.getType();
+        List<Ingredient> ingredientsOwned = gson.fromJson(jsonAsString, listType);
         List<Recipe> availableRecipes = recipeService.getListOfAvailableRecipes(ingredientsOwned);
         return new ResponseEntity<>(availableRecipes, OK);
     }
